@@ -1,1 +1,0 @@
-# uenohajime.github.io
