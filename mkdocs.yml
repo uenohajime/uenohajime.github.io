@@ -1,6 +1,12 @@
-site_name: Document
+site_name: パブリック メモ
 site_url: https://uenohajime.github.io/
 repo_url: https://github.com/uenohajime/uenohajime.github.io
 site_author: Hajime Ueno
-lang: ['ja']
-theme: material
+theme:
+  name: material
+  language: ja
+
+nav:
+  - Home: 'index.md'
+  - 'GitHub Actions':
+    - 'MkDocs 自動デプロイ': 'actions/mkdocs.md'
