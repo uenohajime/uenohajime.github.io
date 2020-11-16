@@ -5,6 +5,9 @@ site_author: Hajime Ueno
 theme:
   name: material
   language: ja
+google_analytics:
+  - G-SKCS56BCRD
+  - auto
 
 nav:
   - Home: 'index.md'
