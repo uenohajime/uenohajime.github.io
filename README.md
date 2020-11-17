@@ -4,7 +4,7 @@
 
 このリポジトリは GitHub Actions を使って、MkDocs の静的サイトを自動生成しています。
 
-静的サイトの URL は、 [こちら](https://uenohajime.github.io/) です。
+生成した静的サイトの URL は、[こちら](https://uenohajime.github.io/)です。
 
 ## 参考サイト
 
