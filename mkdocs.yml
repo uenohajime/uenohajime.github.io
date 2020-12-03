@@ -13,3 +13,5 @@ nav:
   - Home: 'index.md'
   - 'GitHub Actions':
     - 'MkDocs 自動デプロイ': 'actions/mkdocs.md'
+  - 'ハンズオン':
+    - 'App Service (.NET Core) + SQL Server': 'handson/appservice-sqlserver'
