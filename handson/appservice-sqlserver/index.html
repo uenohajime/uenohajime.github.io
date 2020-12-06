@@ -18,7 +18,7 @@
     
     
       
-        <title>Azure App Service + SQL Server ハンズオン - パブリック メモ</title>
+        <title>Azure App Service + SQL Server ハンズオン (2020/11) - パブリック メモ</title>
       
     
     
@@ -65,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#azure-app-service-sql-server" class="md-skip">
+        <a href="#azure-app-service-sql-server-202011" class="md-skip">
           コンテンツにスキップ
         </a>
       
@@ -95,7 +95,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Azure App Service + SQL Server ハンズオン
+              Azure App Service + SQL Server ハンズオン (2020/11)
             
           </span>
         </div>
@@ -299,29 +299,36 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#sql-database" class="md-nav__link">
-    SQL Database の作成
+  <a href="#0" class="md-nav__link">
+    0. 事前準備
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#app-service-web" class="md-nav__link">
-    App Service 作成とWebアプリ設置
+  <a href="#1-sql-database" class="md-nav__link">
+    1. SQL Database の作成
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#app-service-web_1" class="md-nav__link">
-    App Service への Web アプリの複数バージョン設置
+  <a href="#2-app-service-web" class="md-nav__link">
+    2. App Service 作成とWebアプリ設置
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#app-service-blue-green" class="md-nav__link">
-    App Service の Blue / Green デプロイメント
+  <a href="#3-app-service-web" class="md-nav__link">
+    3. App Service への Web アプリの複数バージョン設置
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-app-service-blue-green" class="md-nav__link">
+    4. App Service の Blue / Green デプロイメント
   </a>
   
 </li>
@@ -357,15 +364,21 @@
                   </a>
                 
                 
-                <h1 id="azure-app-service-sql-server">Azure App Service + SQL Server ハンズオン</h1>
-<p>ここでは App Service と SQL Server を連携させた ToDo アプリを設置する方法を実践します。</p>
-<h2 id="sql-database">SQL Database の作成</h2>
+                <h1 id="azure-app-service-sql-server-202011">Azure App Service + SQL Server ハンズオン (2020/11)</h1>
+<p>このハンズオンでは、次の図に示すように App Service と SQL Server を連携させた ToDo アプリを設置する方法を実践します。設置作業は、AzureポータルとAzure Cloud Shellを用いて行います。</p>
+<div align="center">
+    <img src="imgs/00-goal-architecture.png" width="60%">
+</div>
+
+<h2 id="0">0. 事前準備</h2>
+<p>このハンズオンでは、AzureポータルとAzure CloudShellで作業を行います。予めAzureアカウントの取得とサブスクリプションの作成、及び、会社でアカウントが払い出された場合、適切なアクセス権の設定が必要となります。</p>
+<h2 id="1-sql-database">1. SQL Database の作成</h2>
 <p>ここでは SQL Database を作成します。</p>
-<h2 id="app-service-web">App Service 作成とWebアプリ設置</h2>
+<h2 id="2-app-service-web">2. App Service 作成とWebアプリ設置</h2>
 <p>ここでは App Service を作成し、 Web アプリを設置します。</p>
-<h2 id="app-service-web_1">App Service への Web アプリの複数バージョン設置</h2>
+<h2 id="3-app-service-web">3. App Service への Web アプリの複数バージョン設置</h2>
 <p>ここでは App Service に複数のアプリを設置します。</p>
-<h2 id="app-service-blue-green">App Service の Blue / Green デプロイメント</h2>
+<h2 id="4-app-service-blue-green">4. App Service の Blue / Green デプロイメント</h2>
 <p>ここでは 1 つの App Service に設置された複数のアプリへアクセスするユーザの流れを調整します。</p>
 <h2 id="_1">参考サイト</h2>
 <ul>
