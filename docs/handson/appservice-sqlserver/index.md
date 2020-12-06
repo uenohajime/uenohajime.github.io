@@ -1,20 +1,29 @@
-# Azure App Service + SQL Server ハンズオン
+# Azure App Service + SQL Server ハンズオン (2020/11)
 
-ここでは App Service と SQL Server を連携させた ToDo アプリを設置する方法を実践します。
+このハンズオンでは、次の図に示すように App Service と SQL Server を連携させた ToDo アプリを設置する方法を実践します。設置作業は、AzureポータルとAzure Cloud Shellを用いて行います。
 
-## SQL Database の作成
+<div align="center">
+    <img src="imgs/00-goal-architecture.png" width="60%">
+</div>
+
+## 0. 事前準備
+
+このハンズオンでは、AzureポータルとAzure CloudShellで作業を行います。予めAzureアカウントの取得とサブスクリプションの作成、及び、会社でアカウントが払い出された場合、適切なアクセス権の設定が必要となります。
+
+
+## 1. SQL Database の作成
 
 ここでは SQL Database を作成します。
 
-## App Service 作成とWebアプリ設置
+## 2. App Service 作成とWebアプリ設置
 
 ここでは App Service を作成し、 Web アプリを設置します。
 
-## App Service への Web アプリの複数バージョン設置
+## 3. App Service への Web アプリの複数バージョン設置
 
 ここでは App Service に複数のアプリを設置します。
 
-## App Service の Blue / Green デプロイメント
+## 4. App Service の Blue / Green デプロイメント
 
 ここでは 1 つの App Service に設置された複数のアプリへアクセスするユーザの流れを調整します。
 
