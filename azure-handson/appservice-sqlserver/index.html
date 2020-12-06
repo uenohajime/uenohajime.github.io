@@ -375,6 +375,197 @@
 <h2 id="1-sql-database">1. SQL Database の作成</h2>
 <p>ここでは SQL Database を作成します。 SQL Database の作成とは、 SQL Server を設置して、 SQL Server 上にデータベースを作成していくという手順となります。 Azure では SQL Database 作成画面で SQL Server を作成することが可能です。</p>
 <p>このハンズオンでは、次の画面に示すようにパラメータを設定していきます。</p>
+<table>
+<thead>
+<tr>
+<th>パラメータ名</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>サーバ名</td>
+<td>handson4&lt;名字&gt;</td>
+</tr>
+<tr>
+<td>サーバ管理者ログイン</td>
+<td>dbadmin</td>
+</tr>
+<tr>
+<td>パスワード</td>
+<td>P@ssw0rd</td>
+</tr>
+<tr>
+<td>場所</td>
+<td>東日本</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>パラメータ名</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>リソースグループ</td>
+<td>handson4&lt;名字&gt;</td>
+</tr>
+<tr>
+<td>データベース名</td>
+<td>coreDB</td>
+</tr>
+<tr>
+<td>エラスティックプール</td>
+<td>いいえ</td>
+</tr>
+<tr>
+<td>コンピューティングストレージ</td>
+<td>サーバレス、Gen5、1 vCore、1 GB ストレージ</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>パラメータ名</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>接続方法</td>
+<td>パブリック エンドポイント</td>
+</tr>
+<tr>
+<td>ファイアウォール規則：Azure サービス</td>
+<td>はい</td>
+</tr>
+<tr>
+<td>ファイアウォール規則：現在のクライアント</td>
+<td>いいえ</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>パラメータ名</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>既存データの使用</td>
+<td>なし</td>
+</tr>
+<tr>
+<td>照合順序（変更なし）</td>
+<td>SQL_Latin1_General_CP1_CI_AS</td>
+</tr>
+<tr>
+<td>Azure Defender for SQL</td>
+<td>後で</td>
+</tr>
+</tbody>
+</table>
+<pre><code>git clone https://github.com/uenohajime/dotnetcore-sqldb-tutorial.git
+</code></pre>
+<pre><code>cd dotnetcore-sqldb-tutorial
+</code></pre>
+<pre><code>code .
+</code></pre>
+<pre><code>services.AddDbContext&lt;MyDatabaseContext&gt;(options =&gt;
+   options.UseSqlServer(Configuration.GetConnectionString(&quot;MyDbConnection&quot;)));
+</code></pre>
+<pre><code>rm Migrations -r
+</code></pre>
+<pre><code>dotnet ef migrations add InitialCreate
+</code></pre>
+<pre><code>az sql db show-connection-string --client ado.net --server handson4&lt;名字&gt; --name coreDB
+</code></pre>
+<pre><code>export ConnectionStrings__MyDbConnection=&quot;Server=tcp:handson4&lt;名字&gt;.database.windows.net,1433;Database=coreDB;User ID=dbadmin;Password=P@ssw0rd;Encrypt=true;Connection Timeout=30;&quot;
+</code></pre>
+<pre><code>dotnet ef database update
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>パラメータ名</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>リソースグループ</td>
+<td>handson4&lt;名字&gt;</td>
+</tr>
+<tr>
+<td>名前</td>
+<td>handson4&lt;名字&gt;</td>
+</tr>
+<tr>
+<td>公開</td>
+<td>コード</td>
+</tr>
+<tr>
+<td>ランタイム スタック</td>
+<td>.NET Core 2.1</td>
+</tr>
+<tr>
+<td>オペレーティング システム</td>
+<td>Windows</td>
+</tr>
+<tr>
+<td>地域</td>
+<td>Japan East</td>
+</tr>
+<tr>
+<td>Windows プラン</td>
+<td>handson4&lt;名字&gt;</td>
+</tr>
+<tr>
+<td>SKUとサイズ</td>
+<td>Standard S1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>パラメータ名</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>名前</td>
+<td>MyDbConnection</td>
+</tr>
+<tr>
+<td>値</td>
+<td>Server=tcp:handson4&lt;名字&gt;.database.windows.net,1433;Database=coreDB;User ID=dbadmin;Password=P@ssw0rd;Encrypt=true;Connection Timeout=30;</td>
+</tr>
+<tr>
+<td>種類</td>
+<td>SQLAzure</td>
+</tr>
+</tbody>
+</table>
+<pre><code>cd dotnetcore-sqldb-tutorial
+</code></pre>
+<pre><code>git config --global user.email “you@example.com” &amp;&amp; git config --global user.name “Your Name”
+</code></pre>
+<pre><code>git add . &amp;&amp; git commit –m “connect to SQLDB in Azure”
+</code></pre>
+<pre><code>az webapp deployment user set --user-name handson4&lt;名字&gt; --password P@ssw0rd
+</code></pre>
+<pre><code>git remote add azure https://handson4&lt;名字&gt;.scm.azurewebsites.net:443/handson4&lt;名字&gt;.git
+</code></pre>
+<pre><code>git push azure master
+</code></pre>
 <h2 id="2-app-service-web">2. App Service 作成とWebアプリ設置</h2>
 <p>ここでは App Service を作成し、 Web アプリを設置します。</p>
 <h2 id="3-app-service-web">3. App Service への Web アプリの複数バージョン設置</h2>
