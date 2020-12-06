@@ -80,6 +80,11 @@ export ConnectionStrings__MyDbConnection="Server=tcp:handson4<名字>.database.w
 dotnet ef database update
 ```
 
+
+## 2. App Service 作成とWebアプリ設置
+
+ここでは App Service を作成し、 Web アプリを設置します。
+
 | パラメータ名 | 値 |
 | ---------- | -- |
 | リソースグループ | handson4<名字> |
@@ -121,10 +126,6 @@ git remote add azure https://handson4<名字>.scm.azurewebsites.net:443/handson4
 git push azure master
 ```
 
-
-## 2. App Service 作成とWebアプリ設置
-
-ここでは App Service を作成し、 Web アプリを設置します。
 
 ## 3. App Service への Web アプリの複数バージョン設置
 
