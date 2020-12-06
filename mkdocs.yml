@@ -12,6 +12,6 @@ google_analytics:
 nav:
   - Home: 'index.md'
   - 'GitHub Actions':
-    - 'MkDocs 自動デプロイ': 'actions/mkdocs.md'
-  - 'ハンズオン':
-    - 'App Service (.NET Core) + SQL Server': 'handson/appservice-sqlserver'
+    - 'MkDocs 自動デプロイ': 'github-actions/mkdocs.md'
+  - 'Azure ハンズオン':
+    - 'App Service (.NET Core) + SQL Server': 'azure-handson/appservice-sqlserver'
