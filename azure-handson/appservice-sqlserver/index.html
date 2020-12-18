@@ -310,6 +310,26 @@
     1. SQL Database の作成
   </a>
   
+    <nav class="md-nav" aria-label="1. SQL Database の作成">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-1-azure" class="md-nav__link">
+    1-1. Azure ポータルからデータベースを作成
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-2-azure-cloud-shell" class="md-nav__link">
+    1-2. Azure Cloud Shell からデータベースにテーブルを作成
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -381,7 +401,23 @@
 <p>このハンズオンでは、 Azure ポータルと Azure Cloud Shell で作業を行います。予めAzureアカウントの取得とサブスクリプションの作成、及び、会社でアカウントが払い出された場合、適切なアクセス権の設定が必要となります。</p>
 <h2 id="1-sql-database">1. SQL Database の作成</h2>
 <p>ここでは SQL Database を作成します。 SQL Database の作成とは、 SQL Server を設置して、 SQL Server 上にデータベースを作成していくという手順となります。 Azure では SQL Database 作成画面で SQL Server を作成することが可能です。</p>
-<p>このハンズオンでは、次の画面に示すようにパラメータを設定していきます。</p>
+<h3 id="1-1-azure">1-1. Azure ポータルからデータベースを作成</h3>
+<p>まず、SQL Database 作成画面へ移動します。Azure ポータルの左上にあるアイコンをクリックして、メニューを開き、「リソースの作成」ボタンをクリックします。</p>
+<div align="center">
+    <img src="imgs/01-choose-create-resource-menu.png" width="60%">
+</div>
+
+<p>次にSQL Databaseをメニューで選択します。</p>
+<div align="center">
+    <img src="imgs/02-choose-create-sql-database-menu.png" width="60%">
+</div>
+
+<p>次に SQL Database 作成のフォームが表示されるので、次のように入力します。SQL Database 作成画面で 「サーバ &gt; 新規作成」を押すと、画面の右側に SQL Server の作成画面が現れます。ここでは、SQL Serverも同時に作成します。</p>
+<div align="center">
+    <img src="imgs/03-fill-create-sql-database-general-settings-form.png" width="60%">
+</div>
+
+<p>作成する SQL Server の情報は次のようになります。</p>
 <table>
 <thead>
 <tr>
@@ -408,6 +444,7 @@
 </tr>
 </tbody>
 </table>
+<p>作成する SQL Database の情報は次のようになります。</p>
 <table>
 <thead>
 <tr>
@@ -434,6 +471,13 @@
 </tr>
 </tbody>
 </table>
+<p>入力が完了したら、「次: ネットワーク」ボタンを押し次のページに進みます。</p>
+<div align="center">
+    <img src="imgs/04-fill-create-sql-database-network-settings-form.png" width="60%">
+</div>
+
+<p>ネットワーク情報の設定画面では、次のように設定します。</p>
+<p>※ クエリエディタでテーブルが作成されたことを確認する場合、「ファイアウォール規則：現在のクライアント」の値を「はい」に設定する必要があります。ただし、運用データベースではこの設定は推奨されません。</p>
 <table>
 <thead>
 <tr>
@@ -456,6 +500,12 @@
 </tr>
 </tbody>
 </table>
+<p>入力が完了したら、「次：追加機能」ボタンを押し、次のページに進みます。</p>
+<div align="center">
+    <img src="imgs/05-fill-create-sql-database-additional-settings-form.png" width="60%">
+</div>
+
+<p>追加機能画面では、「Azure Defender for SQL の有効化」を「後で」に変更し、「確認および作成」ボタンを押します。確認の結果、エラーが発生しなければ、「作成」ボタンを押して、SQL Database の作成を行います。</p>
 <table>
 <thead>
 <tr>
@@ -478,23 +528,38 @@
 </tr>
 </tbody>
 </table>
+<h3 id="1-2-azure-cloud-shell">1-2. Azure Cloud Shell からデータベースにテーブルを作成</h3>
+<p>ここでは、作成したデータベースにテーブルを作成していきます。テーブルの作成には、.NETに用意されているEntity Frameworkを利用して、ソースコードから自動的にテーブルを作成します。ここでの操作は、全てCloud Shell上で実行します。</p>
+<p>まず、ToDoアプリのソースコードをCloud Shellにダウンロードします。</p>
 <pre><code>git clone https://github.com/uenohajime/dotnetcore-sqldb-tutorial.git
 </code></pre>
+<p>次にダウンロードしたプロジェクト・フォルダに移動します。</p>
 <pre><code>cd dotnetcore-sqldb-tutorial
 </code></pre>
+<p>ソースコードの書き換えのため、エディタを起動します。ここで変更する内容は、もともと、手元のSQLiteをデータベースとして利用するアプリをSQL Databaseをデータベースとして利用するように書き換えます。</p>
 <pre><code>code .
 </code></pre>
+<p>Startup.cs ファイルを開き 31 - 32行目あたりにある次の行を、行の先頭に「//」を追記することでコメントアウトします。</p>
+<pre><code>services.AddDbContext&lt;MyDatabaseContext&gt;(options =&gt;
+    options.UseSqlite(&quot;Data Source=localdatabase.db&quot;));
+</code></pre>
+<p>次にコメントアウトした行の次の行に、次の２行を追加します。</p>
 <pre><code>services.AddDbContext&lt;MyDatabaseContext&gt;(options =&gt;
    options.UseSqlServer(Configuration.GetConnectionString(&quot;MyDbConnection&quot;)));
 </code></pre>
+<p>次に既存のSQLiteアクセス用のコードを削除します。</p>
 <pre><code>rm Migrations -r
 </code></pre>
+<p>そして、dotnetコマンドの Entity Framework を使って、SQL Database用のコードを生成します。</p>
 <pre><code>dotnet ef migrations add InitialCreate
 </code></pre>
+<p>SQL Database へアクセスするための接続文字列を取得します。</p>
 <pre><code>az sql db show-connection-string --client ado.net --server handson4&lt;名字&gt; --name coreDB
 </code></pre>
+<p>取得した接続文字列を環境変数として保存します。</p>
 <pre><code>export ConnectionStrings__MyDbConnection=&quot;Server=tcp:handson4&lt;名字&gt;.database.windows.net,1433;Database=coreDB;User ID=dbadmin;Password=P@ssw0rd;Encrypt=true;Connection Timeout=30;&quot;
 </code></pre>
+<p>作成した SQL Database にテーブルを作成します。</p>
 <pre><code>dotnet ef database update
 </code></pre>
 <h2 id="2-app-service-web">2. App Service 作成とWebアプリ設置</h2>
