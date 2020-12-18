@@ -1,4 +1,4 @@
-# Azure App Service + SQL Server ハンズオン (2020/11)
+# Azure App Service + SQL Server ハンズオン (2020年12月 更新)
 
 このハンズオンでは、次の図に示すように App Service と SQL Server を連携させた ToDo アプリを設置する方法を実践します。設置作業は、 Azure ポータルと Azure Cloud Shell を用いて行います。
 
