@@ -144,3 +144,7 @@ git push azure master
 ## スライド
 
 * [スライド (パスワード付き)](../../../pdf/AppService-NET-SQL-DB.zip)
+
+## 変更履歴
+
+* 2020/12/18 CloudShellにインストールされているdotnetコマンドのバージョンが3.1となったため、それに伴い内容を変更
