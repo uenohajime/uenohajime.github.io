@@ -8,22 +8,24 @@
       
       
       
+        <link rel="canonical" href="https://uenohajime.github.io/developments/iac-terraform/">
+      
       
         <meta name="author" content="Hajime Ueno">
       
-      <link rel="shortcut icon" href="/assets/images/favicon.png">
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.5">
     
     
       
-        <title>パブリック メモ</title>
+        <title>Terraform を利用した IaC について - パブリック メモ</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.21aed14c.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.21aed14c.min.css">
       
         
-        <link rel="stylesheet" href="/assets/stylesheets/palette.196e0c26.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.196e0c26.min.css">
         
       
     
@@ -62,6 +64,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#terraform-iac" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -88,7 +95,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              
+              Terraform を利用した IaC について
             
           </span>
         </div>
@@ -188,7 +195,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/." class="md-nav__link">
+    <a href="../.." class="md-nav__link">
       Home
     </a>
   </li>
@@ -220,7 +227,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/developments/iac-terraform" class="md-nav__link">
+    <a href="." class="md-nav__link">
       Terraform を活用した IaC
     </a>
   </li>
@@ -257,7 +264,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/github-actions/mkdocs/" class="md-nav__link">
+    <a href="../../github-actions/mkdocs/" class="md-nav__link">
       MkDocs 自動デプロイ
     </a>
   </li>
@@ -294,7 +301,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/azure-handson/appservice-sqlserver" class="md-nav__link">
+    <a href="../../azure-handson/appservice-sqlserver" class="md-nav__link">
       App Service (.NET Core) + SQL Server
     </a>
   </li>
@@ -312,12 +319,83 @@
               </div>
             
             
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#iac" class="md-nav__link">
+    IaC のメリットとデメリット
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    Terraform の基本的な流れ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    実装のポイント
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    参考サイト
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
-  <h1>404 - Not found</h1>
-
+                
+                  <a href="https://github.com/uenohajime/uenohajime.github.io/edit/master/docs/developments/iac-terraform/index.md" title="編集" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="terraform-iac">Terraform を利用した IaC について</h1>
+<p>Terraform は、HashiCorp 製の Infrastructure as Code (IaC) です。安全に繰り返しインフラストラクチャを構築、変更、管理するためのツールです。運用者とインフラ・チームは、 HashiCorp 構成言語 (HCL) と呼ばれる構成言語で環境を管理できます。
+(<a href="https://learn.hashicorp.com/tutorials/terraform/infrastructure-as-code?in=terraform/azure-get-started">Terraform HP より</a>)</p>
+<h2 id="iac">IaC のメリットとデメリット</h2>
+<p>まず、 IaC のメリットは、簡単に環境を再現できることです。開発環境で定義した環境を簡単にステージング環境に設置することが可能になります。さらに、他の人が環境を再現したい時に簡単に環境を定義することが可能になります。</p>
+<p>一方でIaC を利用するデメリットは、次のようなことが考えられます。
+システムの巨大化するにつれて、メンテナンスコストが高くなってくることです。また、 IaC 実行でエラーが発生した場合、実行前の環境に戻すことが容易ではありません。
+(<a href="https://www.redhat.com/sysadmin/pros-and-cons-infrastructure-code">redhad 記事</a>)</p>
+<h2 id="terraform">Terraform の基本的な流れ</h2>
+<h2 id="_1">実装のポイント</h2>
+<h2 id="_2">参考サイト</h2>
+<ul>
+<li><a href="https://www.terraform.io/">Terraform</a></li>
+</ul>
+                
+              
               
                 
 
@@ -347,15 +425,15 @@
       
     </div>
     
-      <script src="/assets/javascripts/vendor.7e0ee788.min.js"></script>
-      <script src="/assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\u3000\u3001\u3002\uff0c\uff0e]+", "search.placeholder": "\u691c\u7d22", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../../assets/javascripts/vendor.7e0ee788.min.js"></script>
+      <script src="../../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\u3000\u3001\u3002\uff0c\uff0e]+", "search.placeholder": "\u691c\u7d22", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
-          base: "/",
+          base: "../..",
           features: [],
           search: Object.assign({
-            worker: "/assets/javascripts/worker/search.4ac00218.min.js"
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
