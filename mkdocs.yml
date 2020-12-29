@@ -11,6 +11,8 @@ google_analytics:
 
 nav:
   - Home: 'index.md'
+  - 'アプリケーション開発':
+    - 'Terraform を活用した IaC': 'developments/iac-terraform'
   - 'GitHub Actions':
     - 'MkDocs 自動デプロイ': 'github-actions/mkdocs.md'
   - 'Azure ハンズオン':
