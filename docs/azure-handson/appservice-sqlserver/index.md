@@ -6,6 +6,7 @@
     <img src="imgs/00-goal-architecture.png" width="60%">
 </div>
 
+
 ## 0. 事前準備
 
 このハンズオンでは、 Azure ポータルと Azure Cloud Shell で作業を行います。予めAzureアカウントの取得とサブスクリプションの作成、及び、会社でアカウントが払い出された場合、適切なアクセス権の設定が必要となります。
@@ -14,6 +15,7 @@
 ## 1. SQL Database の作成
 
 ここでは SQL Database を作成します。 SQL Database の作成とは、 SQL Server を設置して、 SQL Server 上にデータベースを作成していくという手順となります。 Azure では SQL Database 作成画面で SQL Server を作成することが可能です。
+
 
 ### 1-1. Azure ポータルからデータベースを作成
 
@@ -83,9 +85,10 @@
 | 照合順序（変更なし） | SQL_Latin1_General_CP1_CI_AS |
 | Azure Defender for SQL | 後で |
 
-### 1-2. Azure Cloud Shell からデータベースにテーブルを作成
 
-ここでは、作成したデータベースにテーブルを作成していきます。テーブルの作成には、.NETに用意されているEntity Frameworkを利用して、ソースコードから自動的にテーブルを作成します。ここでの操作は、全てCloud Shell上で実行します。
+### 1-2. Azure Cloud Shell で SQL データベースにテーブルを作成
+
+ここでは、SQLデータベースにテーブルを作成します。テーブルの作成には、.NETに用意されているEntity Frameworkを利用して、ソースコードから自動的にテーブルを作成します。ここでの操作は、全てCloud Shell上で実行します。
 
 まず、ToDoアプリのソースコードをCloud Shellにダウンロードします。
 
@@ -99,7 +102,7 @@ git clone https://github.com/uenohajime/dotnetcore-sqldb-tutorial.git
 cd dotnetcore-sqldb-tutorial
 ```
 
-ソースコードの書き換えのため、エディタを起動します。ここで変更する内容は、もともと、手元のSQLiteをデータベースとして利用するアプリをSQL Databaseをデータベースとして利用するように書き換えます。
+ソースコードの書き換えのため、エディタを起動します。ここで変更する内容は、もともと、ローカルのSQLiteをデータベースとして利用するアプリをSQL Databaseをデータベースとして利用するように書き換えます。
 
 ```
 code .
@@ -119,13 +122,17 @@ services.AddDbContext<MyDatabaseContext>(options =>
    options.UseSqlServer(Configuration.GetConnectionString("MyDbConnection")));
 ```
 
-次に既存のSQLiteアクセス用のコードを削除します。
+<div align="center">
+    <img src="imgs/06-modify-db-settings-on-vscode.png" width="60%">
+</div>
+
+次に既存のSQLiteアクセス用のソースコードを削除します。
 
 ```
 rm Migrations -r
 ```
 
-そして、dotnetコマンドの Entity Framework を使って、SQL Database用のコードを生成します。
+そして、dotnetコマンドの Entity Framework を使って、SQL Database用のソースコードを生成します。
 
 ```
 dotnet ef migrations add InitialCreate
@@ -137,22 +144,48 @@ SQL Database へアクセスするための接続文字列を取得します。
 az sql db show-connection-string --client ado.net --server handson4<名字> --name coreDB
 ```
 
-取得した接続文字列を環境変数として保存します。
+ここで取得できる接続文字列は、User IDとPasswordの値はマスキングされているので、先ほど、SQLサーバを作成時に入力したあたいに置き換えてください。取得ができたら、その接続文字列を環境変数に保存します。
 
 ```
 export ConnectionStrings__MyDbConnection="Server=tcp:handson4<名字>.database.windows.net,1433;Database=coreDB;User ID=dbadmin;Password=P@ssw0rd;Encrypt=true;Connection Timeout=30;"
 ```
 
-作成した SQL Database にテーブルを作成します。
+最後にEntity Frameworkのコマンドを実行して、ソースコードに記述されたテーブルの定義をSQL Databaseに反映します。
 
 ```
 dotnet ef database update
 ```
 
+正しくテーブルが作成できたかについては、Azureポータル上でSQLデータベースへ移動し、「クエリエディター（プレビュー）」を選択し、ログインをします。
+
+この時、下の図のように「テーブル」の中に「dbo.Todo」と言う名前のテーブルが存在することが確認できると、正しくテーブルの作成が完了したことになります。
+
+<div align="center">
+    <img src="imgs/07-create-sql-server.png" width="60%">
+</div>
+
 
 ## 2. App Service 作成とWebアプリ設置
 
-ここでは App Service を作成し、 Web アプリを設置します。
+### 2-1. App Service 作成
+
+ここでは App Service を作成し、 Web アプリを設置します。Azure ポータルの左上にあるアイコンをクリックして、メニューを開き、「リソースの作成」ボタンをクリックします。
+
+<div align="center">
+    <img src="imgs/01-choose-create-resource-menu.png" width="60%">
+</div>
+
+次に「 Web アプリ」を選択します。
+
+<div align="center">
+    <img src="imgs/08-choose-web-app-menu.png" width="60%">
+</div>
+
+表示された画面で Web アプリに必要な項目を次のように入力します。その後、「確認および作成」ボタンを押し、問題が生じなければ、「作成」ボタンを押します。
+
+<div align="center">
+    <img src="imgs/09-fill-create-web-app-form.png" width="60%">
+</div>
 
 | パラメータ名 | 値 |
 | ---------- | -- |
@@ -164,6 +197,19 @@ dotnet ef database update
 | 地域 | Japan East |
 | Windows プラン | handson4<名字> |
 | SKUとサイズ | Standard S1 |
+
+
+### 2-2. App Service に Connection Strings を設定
+
+「Web アプリ」の作成を完了させると、次に App Service から SQL データベースへ接続するためのアクセスキーを Connection Strings として設定します。
+
+まず、Azureポータル上で作成したApp Serviceの画面を開き、左のメニューの「設定 > 構成」を選択します。次に表示された画面の下の方にある「接続文字列」の「新しい接続文字列」を選択します。
+
+そして、表示される画面上で次のように入力します。その後、「保存」ボタンを押し、追加した内容を保存します。
+
+<div align="center">
+    <img src="imgs/10-add-connection-string-on-web-app.png" width="60%">
+</div>
 
 | パラメータ名 | 値 |
 | ---------- | -- |
@@ -200,9 +246,11 @@ git push azure master
 
 ここでは App Service に複数のアプリを設置します。
 
+
 ## 4. App Service の Blue / Green デプロイメント
 
 ここでは 1 つの App Service に設置された複数のアプリへアクセスするユーザの流れを調整します。
+
 
 ## 参考サイト
 
