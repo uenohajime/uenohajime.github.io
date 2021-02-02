@@ -1,11 +1,6 @@
-# Azure App Service + SQL Server ハンズオン (2020年12月 更新)
+# Azure Kubernetes Service + SQL Server ハンズオン (2021年1月 更新)
 
-このハンズオンでは、次の図に示すように App Service と SQL Server を連携させた ToDo アプリを設置する方法を実践します。設置作業は、 Azure ポータルと Azure Cloud Shell を用いて行います。
-
-<div align="center">
-    <img src="imgs/00-goal-architecture.png" width="60%">
-</div>
-
+このハンズオンでは、次の図に示すように Azure Kubernetes Service (AKS) と SQL Server を連携させた ToDo アプリを設置する方法を実践します。設置作業は、 Azure ポータルと Azure Cloud Shell を用いて行います。
 
 ## 0. 事前準備
 
@@ -164,104 +159,4 @@ dotnet ef database update
     <img src="imgs/07-create-sql-server.png" width="60%">
 </div>
 
-
-## 2. App Service 作成と Web アプリ設置
-
-### 2-1. App Service 作成
-
-ここでは App Service を作成し、 Web アプリを設置します。Azure ポータルの左上にあるアイコンをクリックして、メニューを開き、「リソースの作成」ボタンをクリックします。
-
-<div align="center">
-    <img src="imgs/01-choose-create-resource-menu.png" width="60%">
-</div>
-
-次に「 Web アプリ」を選択します。
-
-<div align="center">
-    <img src="imgs/08-choose-web-app-menu.png" width="60%">
-</div>
-
-表示された画面で Web アプリに必要な項目を次のように入力します。その後、「確認および作成」ボタンを押し、問題が生じなければ、「作成」ボタンを押します。
-
-<div align="center">
-    <img src="imgs/09-fill-create-web-app-form.png" width="60%">
-</div>
-
-| パラメータ名 | 値 |
-| ---------- | -- |
-| リソースグループ | handson4<名字> |
-| 名前 | handson4<名字> |
-| 公開 | コード |
-| ランタイム スタック | .NET Core 2.1 |
-| オペレーティング システム | Windows |
-| 地域 | Japan East |
-| Windows プラン | handson4<名字> |
-| SKUとサイズ | Standard S1 |
-
-
-### 2-2. App Service に Connection Strings を設定
-
-「Web アプリ」の作成を完了させると、次に App Service から SQL データベースへ接続するためのアクセスキーを Connection Strings として設定します。
-
-まず、Azureポータル上で作成したApp Serviceの画面を開き、左のメニューの「設定 > 構成」を選択します。次に表示された画面の下の方にある「接続文字列」の「新しい接続文字列」を選択します。
-
-そして、表示される画面上で次のように入力します。その後、「保存」ボタンを押し、追加した内容を保存します。
-
-<div align="center">
-    <img src="imgs/10-add-connection-string-on-web-app.png" width="60%">
-</div>
-
-| パラメータ名 | 値 |
-| ---------- | -- |
-| 名前 | MyDbConnection |
-| 値 | Server=tcp:handson4<名字>.database.windows.net,1433;Database=coreDB;User ID=dbadmin;Password=P@ssw0rd;Encrypt=true;Connection Timeout=30; |
-| 種類 | SQLAzure |
-
-```
-cd dotnetcore-sqldb-tutorial
-```
-
-```
-git config --global user.email “you@example.com” && git config --global user.name “Your Name”
-```
-
-```
-git add . && git commit –m “connect to SQLDB in Azure”
-```
-
-```
-az webapp deployment user set --user-name handson4<名字> --password P@ssw0rd
-```
-
-```
-git remote add azure https://handson4<名字>.scm.azurewebsites.net:443/handson4<名字>.git
-```
-
-```
-git push azure master
-```
-
-
-## 3. App Service への Web アプリの複数バージョン設置
-
-ここでは App Service に複数のアプリを設置します。
-
-
-## 4. App Service の Blue / Green デプロイメント
-
-ここでは 1 つの App Service に設置された複数のアプリへアクセスするユーザの流れを調整します。
-
-
-## 参考サイト
-
-* [チュートリアル:Azure App Service での ASP.NET Core および Azure SQL Database アプリの作成](https://docs.microsoft.com/ja-jp/azure/app-service/tutorial-dotnetcore-sqldb-app?pivots=platform-windows)
-* [Azure SQL Database 料金](https://azure.microsoft.com/ja-jp/pricing/details/sql-database/single/)
-* [Azure App Service 料金](https://azure.microsoft.com/ja-jp/pricing/details/app-service/windows/)
-
-## スライド
-
-* [スライド (パスワード付き)](../../../pdf/AppService-NET-SQL-DB.zip)
-
-## 変更履歴
-
-* 2020/12/18 CloudShellにインストールされているdotnetコマンドのバージョンが3.1となったため、それに伴い内容を変更
+## 2. AKS 作成とWebアプリ設置
