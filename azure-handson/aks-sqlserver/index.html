@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://uenohajime.github.io/azure-handson/appservice-sqlserver/">
+        <link rel="canonical" href="https://uenohajime.github.io/azure-handson/aks-sqlserver/">
       
       
         <meta name="author" content="Hajime Ueno">
@@ -18,7 +18,7 @@
     
     
       
-        <title>Azure App Service + SQL Server ハンズオン (2020年12月 更新) - パブリック メモ</title>
+        <title>Azure Kubernetes Service + SQL Server ハンズオン (2021年1月 更新) - パブリック メモ</title>
       
     
     
@@ -65,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#azure-app-service-sql-server-202012" class="md-skip">
+        <a href="#azure-kubernetes-service-sql-server-20211" class="md-skip">
           コンテンツにスキップ
         </a>
       
@@ -95,7 +95,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Azure App Service + SQL Server ハンズオン (2020年12月 更新)
+              Azure Kubernetes Service + SQL Server ハンズオン (2021年1月 更新)
             
           </span>
         </div>
@@ -301,7 +301,7 @@
 
 
   <li class="md-nav__item">
-    <a href="." class="md-nav__link">
+    <a href="../appservice-sqlserver" class="md-nav__link">
       App Service (.NET Core) + SQL Server
     </a>
   </li>
@@ -370,63 +370,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-app-service-web" class="md-nav__link">
-    2. App Service 作成と Web アプリ設置
-  </a>
-  
-    <nav class="md-nav" aria-label="2. App Service 作成と Web アプリ設置">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#2-1-app-service" class="md-nav__link">
-    2-1. App Service 作成
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-2-app-service-connection-strings" class="md-nav__link">
-    2-2. App Service に Connection Strings を設定
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-app-service-web" class="md-nav__link">
-    3. App Service への Web アプリの複数バージョン設置
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-app-service-blue-green" class="md-nav__link">
-    4. App Service の Blue / Green デプロイメント
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    参考サイト
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    スライド
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    変更履歴
+  <a href="#2-aks-web" class="md-nav__link">
+    2. AKS 作成とWebアプリ設置
   </a>
   
 </li>
@@ -443,17 +388,13 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/uenohajime/uenohajime.github.io/edit/master/docs/azure-handson/appservice-sqlserver/index.md" title="編集" class="md-content__button md-icon">
+                  <a href="https://github.com/uenohajime/uenohajime.github.io/edit/master/docs/azure-handson/aks-sqlserver/index.md" title="編集" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="azure-app-service-sql-server-202012">Azure App Service + SQL Server ハンズオン (2020年12月 更新)</h1>
-<p>このハンズオンでは、次の図に示すように App Service と SQL Server を連携させた ToDo アプリを設置する方法を実践します。設置作業は、 Azure ポータルと Azure Cloud Shell を用いて行います。</p>
-<div align="center">
-    <img src="imgs/00-goal-architecture.png" width="60%">
-</div>
-
+                <h1 id="azure-kubernetes-service-sql-server-20211">Azure Kubernetes Service + SQL Server ハンズオン (2021年1月 更新)</h1>
+<p>このハンズオンでは、次の図に示すように Azure Kubernetes Service (AKS) と SQL Server を連携させた ToDo アプリを設置する方法を実践します。設置作業は、 Azure ポータルと Azure Cloud Shell を用いて行います。</p>
 <h2 id="0">0. 事前準備</h2>
 <p>このハンズオンでは、 Azure ポータルと Azure Cloud Shell で作業を行います。予めAzureアカウントの取得とサブスクリプションの作成、及び、会社でアカウントが払い出された場合、適切なアクセス権の設定が必要となります。</p>
 <h2 id="1-sql-database">1. SQL Database の作成</h2>
@@ -629,125 +570,7 @@
     <img src="imgs/07-create-sql-server.png" width="60%">
 </div>
 
-<h2 id="2-app-service-web">2. App Service 作成と Web アプリ設置</h2>
-<h3 id="2-1-app-service">2-1. App Service 作成</h3>
-<p>ここでは App Service を作成し、 Web アプリを設置します。Azure ポータルの左上にあるアイコンをクリックして、メニューを開き、「リソースの作成」ボタンをクリックします。</p>
-<div align="center">
-    <img src="imgs/01-choose-create-resource-menu.png" width="60%">
-</div>
-
-<p>次に「 Web アプリ」を選択します。</p>
-<div align="center">
-    <img src="imgs/08-choose-web-app-menu.png" width="60%">
-</div>
-
-<p>表示された画面で Web アプリに必要な項目を次のように入力します。その後、「確認および作成」ボタンを押し、問題が生じなければ、「作成」ボタンを押します。</p>
-<div align="center">
-    <img src="imgs/09-fill-create-web-app-form.png" width="60%">
-</div>
-
-<table>
-<thead>
-<tr>
-<th>パラメータ名</th>
-<th>値</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>リソースグループ</td>
-<td>handson4&lt;名字&gt;</td>
-</tr>
-<tr>
-<td>名前</td>
-<td>handson4&lt;名字&gt;</td>
-</tr>
-<tr>
-<td>公開</td>
-<td>コード</td>
-</tr>
-<tr>
-<td>ランタイム スタック</td>
-<td>.NET Core 2.1</td>
-</tr>
-<tr>
-<td>オペレーティング システム</td>
-<td>Windows</td>
-</tr>
-<tr>
-<td>地域</td>
-<td>Japan East</td>
-</tr>
-<tr>
-<td>Windows プラン</td>
-<td>handson4&lt;名字&gt;</td>
-</tr>
-<tr>
-<td>SKUとサイズ</td>
-<td>Standard S1</td>
-</tr>
-</tbody>
-</table>
-<h3 id="2-2-app-service-connection-strings">2-2. App Service に Connection Strings を設定</h3>
-<p>「Web アプリ」の作成を完了させると、次に App Service から SQL データベースへ接続するためのアクセスキーを Connection Strings として設定します。</p>
-<p>まず、Azureポータル上で作成したApp Serviceの画面を開き、左のメニューの「設定 &gt; 構成」を選択します。次に表示された画面の下の方にある「接続文字列」の「新しい接続文字列」を選択します。</p>
-<p>そして、表示される画面上で次のように入力します。その後、「保存」ボタンを押し、追加した内容を保存します。</p>
-<div align="center">
-    <img src="imgs/10-add-connection-string-on-web-app.png" width="60%">
-</div>
-
-<table>
-<thead>
-<tr>
-<th>パラメータ名</th>
-<th>値</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>名前</td>
-<td>MyDbConnection</td>
-</tr>
-<tr>
-<td>値</td>
-<td>Server=tcp:handson4&lt;名字&gt;.database.windows.net,1433;Database=coreDB;User ID=dbadmin;Password=P@ssw0rd;Encrypt=true;Connection Timeout=30;</td>
-</tr>
-<tr>
-<td>種類</td>
-<td>SQLAzure</td>
-</tr>
-</tbody>
-</table>
-<pre><code>cd dotnetcore-sqldb-tutorial
-</code></pre>
-<pre><code>git config --global user.email “you@example.com” &amp;&amp; git config --global user.name “Your Name”
-</code></pre>
-<pre><code>git add . &amp;&amp; git commit –m “connect to SQLDB in Azure”
-</code></pre>
-<pre><code>az webapp deployment user set --user-name handson4&lt;名字&gt; --password P@ssw0rd
-</code></pre>
-<pre><code>git remote add azure https://handson4&lt;名字&gt;.scm.azurewebsites.net:443/handson4&lt;名字&gt;.git
-</code></pre>
-<pre><code>git push azure master
-</code></pre>
-<h2 id="3-app-service-web">3. App Service への Web アプリの複数バージョン設置</h2>
-<p>ここでは App Service に複数のアプリを設置します。</p>
-<h2 id="4-app-service-blue-green">4. App Service の Blue / Green デプロイメント</h2>
-<p>ここでは 1 つの App Service に設置された複数のアプリへアクセスするユーザの流れを調整します。</p>
-<h2 id="_1">参考サイト</h2>
-<ul>
-<li><a href="https://docs.microsoft.com/ja-jp/azure/app-service/tutorial-dotnetcore-sqldb-app?pivots=platform-windows">チュートリアル:Azure App Service での ASP.NET Core および Azure SQL Database アプリの作成</a></li>
-<li><a href="https://azure.microsoft.com/ja-jp/pricing/details/sql-database/single/">Azure SQL Database 料金</a></li>
-<li><a href="https://azure.microsoft.com/ja-jp/pricing/details/app-service/windows/">Azure App Service 料金</a></li>
-</ul>
-<h2 id="_2">スライド</h2>
-<ul>
-<li><a href="../../../pdf/AppService-NET-SQL-DB.zip">スライド (パスワード付き)</a></li>
-</ul>
-<h2 id="_3">変更履歴</h2>
-<ul>
-<li>2020/12/18 CloudShellにインストールされているdotnetコマンドのバージョンが3.1となったため、それに伴い内容を変更</li>
-</ul>
+<h2 id="2-aks-web">2. AKS 作成とWebアプリ設置</h2>
                 
               
               
