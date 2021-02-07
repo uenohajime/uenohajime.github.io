@@ -9,7 +9,7 @@ Terraform は、HashiCorp 製の Infrastructure as Code (IaC) です。安全に
 
 一方でIaC を利用するデメリットは、次のようなことが考えられます。
 システムの巨大化するにつれて、メンテナンスコストが高くなってくることです。また、 IaC 実行でエラーが発生した場合、実行前の環境に戻すことが容易ではありません。
-([redhad 記事](https://www.redhat.com/sysadmin/pros-and-cons-infrastructure-code))
+([redhat記事](https://www.redhat.com/sysadmin/pros-and-cons-infrastructure-code))
 
 ## Terraform の基本的な流れ
 
