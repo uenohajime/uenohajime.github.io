@@ -391,6 +391,33 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#2-3-app-service" class="md-nav__link">
+    2-3. App Service にアプリを設置
+  </a>
+  
+    <nav class="md-nav" aria-label="2-3. App Service にアプリを設置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2-3-1-local-git" class="md-nav__link">
+    2-3-1. Local Git の設定
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-3-2" class="md-nav__link">
+    2-3-2. アプリの設置
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -689,8 +716,8 @@
 </tbody>
 </table>
 <h3 id="2-2-app-service-connection-strings">2-2. App Service に Connection Strings を設定</h3>
-<p>「Web アプリ」の作成を完了させると、次に App Service から SQL データベースへ接続するためのアクセスキーを Connection Strings として設定します。</p>
-<p>まず、Azureポータル上で作成したApp Serviceの画面を開き、左のメニューの「設定 &gt; 構成」を選択します。次に表示された画面の下の方にある「接続文字列」の「新しい接続文字列」を選択します。</p>
+<p>「Web アプリ」の作成を完了すると、次に App Service から SQL データベースへ接続するためのアクセスキーを Connection Strings として設定します。</p>
+<p>まず、Azureポータル上で作成したApp Serviceの画面を開き、左のメニューの「設定 &gt; 構成」を選択します。次に表示された画面の下の方にある「接続文字列」の「新しい接続文字列」ボタンを押します。</p>
 <p>そして、表示される画面上で次のように入力します。その後、「保存」ボタンを押し、追加した内容を保存します。</p>
 <div align="center">
     <img src="imgs/10-add-connection-string-on-web-app.png" width="60%">
@@ -718,18 +745,56 @@
 </tr>
 </tbody>
 </table>
-<pre><code>cd dotnetcore-sqldb-tutorial
+<h3 id="2-3-app-service">2-3. App Service にアプリを設置</h3>
+<p>次にソースコードを App Service にアップロードします。いくつかの方法が提供されていますが、今回は「ローカル Git 」と呼ばれる Git コマンドで App Service にファイルをアップロードする方法でアプリを設置します。</p>
+<p>手順は、まず、１.ポータルの App Service を設定する画面で、ローカル Git 環境を設定し、２． Cloud Shell でソースコードをアップロードするという手順になります。</p>
+<h4 id="2-3-1-local-git">2-3-1. Local Git の設定</h4>
+<p>まず、ポータルでの App Service にローカル Git を設定します。ポータルで作成した App Service の画面に移動し、左側のメニューn「デプロイメント &gt; デプロイ センター」を選択します。表示されたメニューの中で、今回は「 Local Git 」を選択します。</p>
+<div align="center">
+    <img src="imgs/11-create-local-git-repo-on-web-app.png" width="60%">
+</div>
+
+<p>次にビルドする場所を選択します。今回は、ローカル Git にアップロードされた時にビルドするように、「 App Service のビルド サービス」を選択します。</p>
+<div align="center">
+    <img src="imgs/12-create-local-git-repo-on-web-app-2.png" width="60%">
+</div>
+
+<p>その後、表示される Git Clone URI がソースコードをアップロードする URL となるので、メモをしておきます。</p>
+<div align="center">
+    <img src="imgs/13-create-local-git-repo-on-web-app-3.png" width="60%">
+</div>
+
+<h4 id="2-3-2">2-3-2. アプリの設置</h4>
+<p>次に Cloud Shell でソースコードをアップロードします。まず、 Cloud Shell を立ち上げ、次のコマンドで、アプリのルートディレクトリに移動します。</p>
+<pre><code>cd ~/dotnetcore-sqldb-tutorial
 </code></pre>
+<p>次に、 Git コマンドを使って、ソースコードをアップロードするため、ユーザ情報を Cloud Shell に登録します。登録に必要な情報は、Eメールと名前です。
+次のコマンドの中で "you@example.com" の部分をEメールに置き換え、 "Your Name" の部分を名前に置き換えます。</p>
 <pre><code>git config --global user.email “you@example.com” &amp;&amp; git config --global user.name “Your Name”
 </code></pre>
+<p>次に、先程変更したソースコードを記録するため、次のコマンドを実行します。このコマンドは、 "git add ." の部分は変更を登録するファイルを選択するコマンドとなり、 "." は変更された全てのファイルを対象にします。
+さらに、その変更をコミットするコマンドが、 "git commit -m ..." の部分になります。ここで、 "-m" 以降はコミットと一緒に登録するコメントです。</p>
 <pre><code>git add . &amp;&amp; git commit –m “connect to SQLDB in Azure”
 </code></pre>
+<p>次に、 App Service へソースコードをアップロードするためのユーザを作成します。次のコマンドは、Git コマンド用のユーザ名とパスワードを作成するコマンドです。</p>
 <pre><code>az webapp deployment user set --user-name handson4&lt;名字&gt; --password P@ssw0rd
 </code></pre>
+<p>次に、先程メモした URL をアップロード先として次のコマンドで登録します。</p>
 <pre><code>git remote add azure https://handson4&lt;名字&gt;.scm.azurewebsites.net:443/handson4&lt;名字&gt;.git
 </code></pre>
+<p>最後に次のコマンドで、ソースコードをアップロードします。</p>
 <pre><code>git push azure master
 </code></pre>
+<p>アップロード後、ブラウザで App Service の URL にアクセスし、次のような画面が表示されることを確認します。</p>
+<div align="center">
+    <img src="imgs/14-check-deployed-web-app.png" width="60%">
+</div>
+
+<p>また、実際に ToDo を登録できることを確認します。</p>
+<div align="center">
+    <img src="imgs/15-todo-app-ui.png" width="60%">
+</div>
+
 <h2 id="3-app-service-web">3. App Service への Web アプリの複数バージョン設置</h2>
 <p>ここでは App Service に複数のアプリを設置します。</p>
 <h2 id="4-app-service-blue-green">4. App Service の Blue / Green デプロイメント</h2>
