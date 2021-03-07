@@ -159,4 +159,4 @@ dotnet ef database update
     <img src="imgs/07-create-sql-server.png" width="60%">
 </div>
 
-## 2. AKS 作成とWebアプリ設置
+## 2. AKS 作成と Web アプリ設置
