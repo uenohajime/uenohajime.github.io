@@ -201,9 +201,9 @@ dotnet ef database update
 
 ### 2-2. App Service に Connection Strings を設定
 
-「Web アプリ」の作成を完了させると、次に App Service から SQL データベースへ接続するためのアクセスキーを Connection Strings として設定します。
+「Web アプリ」の作成を完了すると、次に App Service から SQL データベースへ接続するためのアクセスキーを Connection Strings として設定します。
 
-まず、Azureポータル上で作成したApp Serviceの画面を開き、左のメニューの「設定 > 構成」を選択します。次に表示された画面の下の方にある「接続文字列」の「新しい接続文字列」を選択します。
+まず、Azureポータル上で作成したApp Serviceの画面を開き、左のメニューの「設定 > 構成」を選択します。次に表示された画面の下の方にある「接続文字列」の「新しい接続文字列」ボタンを押します。
 
 そして、表示される画面上で次のように入力します。その後、「保存」ボタンを押し、追加した内容を保存します。
 
@@ -217,30 +217,85 @@ dotnet ef database update
 | 値 | Server=tcp:handson4<名字>.database.windows.net,1433;Database=coreDB;User ID=dbadmin;Password=P@ssw0rd;Encrypt=true;Connection Timeout=30; |
 | 種類 | SQLAzure |
 
+
+### 2-3. App Service にアプリを設置
+
+次にソースコードを App Service にアップロードします。いくつかの方法が提供されていますが、今回は「ローカル Git 」と呼ばれる Git コマンドで App Service にファイルをアップロードする方法でアプリを設置します。
+
+手順は、まず、１.ポータルの App Service を設定する画面で、ローカル Git 環境を設定し、２． Cloud Shell でソースコードをアップロードするという手順になります。
+
+#### 2-3-1. Local Git の設定
+
+まず、ポータルでの App Service にローカル Git を設定します。ポータルで作成した App Service の画面に移動し、左側のメニューn「デプロイメント > デプロイ センター」を選択します。表示されたメニューの中で、今回は「 Local Git 」を選択します。
+
+<div align="center">
+    <img src="imgs/11-create-local-git-repo-on-web-app.png" width="60%">
+</div>
+
+次にビルドする場所を選択します。今回は、ローカル Git にアップロードされた時にビルドするように、「 App Service のビルド サービス」を選択します。
+
+<div align="center">
+    <img src="imgs/12-create-local-git-repo-on-web-app-2.png" width="60%">
+</div>
+
+その後、表示される Git Clone URI がソースコードをアップロードする URL となるので、メモをしておきます。
+
+<div align="center">
+    <img src="imgs/13-create-local-git-repo-on-web-app-3.png" width="60%">
+</div>
+
+
+#### 2-3-2. アプリの設置
+
+次に Cloud Shell でソースコードをアップロードします。まず、 Cloud Shell を立ち上げ、次のコマンドで、アプリのルートディレクトリに移動します。
+
 ```
-cd dotnetcore-sqldb-tutorial
+cd ~/dotnetcore-sqldb-tutorial
 ```
+
+次に、 Git コマンドを使って、ソースコードをアップロードするため、ユーザ情報を Cloud Shell に登録します。登録に必要な情報は、Eメールと名前です。
+次のコマンドの中で "you@example.com" の部分をEメールに置き換え、 "Your Name" の部分を名前に置き換えます。
 
 ```
 git config --global user.email “you@example.com” && git config --global user.name “Your Name”
 ```
 
+次に、先程変更したソースコードを記録するため、次のコマンドを実行します。このコマンドは、 "git add ." の部分は変更を登録するファイルを選択するコマンドとなり、 "." は変更された全てのファイルを対象にします。
+さらに、その変更をコミットするコマンドが、 "git commit -m ..." の部分になります。ここで、 "-m" 以降はコミットと一緒に登録するコメントです。
+
 ```
 git add . && git commit –m “connect to SQLDB in Azure”
 ```
+
+次に、 App Service へソースコードをアップロードするためのユーザを作成します。次のコマンドは、Git コマンド用のユーザ名とパスワードを作成するコマンドです。
 
 ```
 az webapp deployment user set --user-name handson4<名字> --password P@ssw0rd
 ```
 
+次に、先程メモした URL をアップロード先として次のコマンドで登録します。
+
 ```
 git remote add azure https://handson4<名字>.scm.azurewebsites.net:443/handson4<名字>.git
 ```
+
+最後に次のコマンドで、ソースコードをアップロードします。
 
 ```
 git push azure master
 ```
 
+アップロード後、ブラウザで App Service の URL にアクセスし、次のような画面が表示されることを確認します。
+
+<div align="center">
+    <img src="imgs/14-check-deployed-web-app.png" width="60%">
+</div>
+
+また、実際に ToDo を登録できることを確認します。
+
+<div align="center">
+    <img src="imgs/15-todo-app-ui.png" width="60%">
+</div>
 
 ## 3. App Service への Web アプリの複数バージョン設置
 
