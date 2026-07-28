@@ -16,7 +16,7 @@ mkdocs-material-extensions==1.0.1
 nltk==3.5
 pipenv==2022.1.8
 Pygments==2.7.2
-pymdown-extensions==8.0.1
+pymdown-extensions==11.0
 PyYAML==5.4
 regex==2020.11.13
 six==1.15.0
